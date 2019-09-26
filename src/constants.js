@@ -41,23 +41,23 @@ export const milestoneToPoints = (milestone: Milestone): number => {
 
 export const pointsToLevels = {
   '0': '1.1',
-  '5': '1.2',
-  '11': '1.3',
-  '17': '2.1',
-  '23': '2.2',
-  '29': '2.3',
-  '36': '3.1',
-  '43': '3.2',
-  '50': '3.3',
-  '58': '4.1',
-  '66': '4.2',
-  '74': '4.3',
-  '90': '5.1',
-  '110': '5.2',
-  '135': '5.3',
+  '12': '1.2',
+  '24': '1.3',
+  '36': '2.1',
+  '48': '2.2',
+  '60': '2.3',
+  '72': '3.1',
+  '96': '3.2',
+  '120': '3.3',
+  '144': '4.1',
+  '192': '4.2',
+  '240': '4.3',
+  '288': '5.1',
+  '304': '5.2',
+  '320': '5.3',
 }
 
-export const maxLevel = 135
+export const maxLevel = 320
 
 export type Track = {
   displayName: string,
@@ -1193,14 +1193,14 @@ export const categoryColorScale = d3.scaleOrdinal()
   .range(['#00abc2', '#428af6', '#e1439f', '#e54552'])
 
 export const titles = [
-  {label: 'Engineer I', minPoints: 0, maxPoints: 16},
-  {label: 'Engineer II', minPoints: 17, maxPoints: 35},
-  {label: 'Senior Engineer', minPoints: 36, maxPoints: 57},
-  {label: 'Group Lead', minPoints: 36, maxPoints: 57},
-  {label: 'Staff Engineer', minPoints: 58, maxPoints: 89},
-  {label: 'Senior Group Lead', minPoints: 58, maxPoints: 89},
-  {label: 'Principal Engineer', minPoints: 90},
-  {label: 'Director of Engineering', minPoints: 90}
+  {label: 'Engineer I', minPoints: 0, maxPoints: 35},
+  {label: 'Engineer II', minPoints: 36, maxPoints: 71},
+  {label: 'Senior Engineer', minPoints: 72, maxPoints: 143},
+  {label: 'Engineering Lead', minPoints: 144, maxPoints: 180},
+  {label: 'Staff Engineer', minPoints: 144, maxPoints: 180},
+  {label: 'Engineering Manager', minPoints: 181, maxPoints: 299},
+  {label: 'Principal Engineer', minPoints: 181, maxPoints: 299},
+  {label: 'Director of Engineering', minPoints: 300}
 ]
 
 export const eligibleTitles = (milestoneMap: MilestoneMap): string[] => {

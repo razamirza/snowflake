@@ -14,11 +14,25 @@ Our growth tool is hosted [publicly](https://snowflake.medium.com).
 You are free to use, change and build on this work to make it useful for your organisation. We will happily consider
 unencumbered code contributions to improve functionality, but as this is the actual tool we use within Medium, acceptance is likely to be intentional, and deliberate. Meaning, slow. As such, you may prefer to fork the codebase for your own needs. We will not accept any contributions that modify the text of the application (but, thank you in advance for pointing out any typos).
 
-## Installation
+## Dockerized Installation
+
+Get docker if you don’t have it already:
+
+`brew install docker`
+
+### Running the dev server
+
+`docker-compose up`
+
+## Non-Dockerized Installation
 
 Get yarn if you don’t have it already:
 
 `npm install -g yarn`
+
+Go to src directory:
+
+`cd src`
 
 Install dependencies:
 
