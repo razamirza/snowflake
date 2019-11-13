@@ -1,15 +1,15 @@
 // @flow
 import * as d3 from 'd3'
 
-export type TrackId = 'MOBILE' | 'WEB_CLIENT' | 'FOUNDATIONS' | 'SERVERS' |
+export type TrackId = 'MOBILE' | 'WEB' | 'FOUNDATIONS' | 'SERVERS' |
   'PROJECT_MANAGEMENT' | 'COMMUNICATION' | 'CRAFT' | 'INITIATIVE' |
-  'CAREER_DEVELOPMENT' | 'ORG_DESIGN' | 'WELLBEING' | 'ACCOMPLISHMENT' |
+  'CAREER_DEVELOPMENT' | 'ORG_DESIGN' | 'PEOPLE_MANAGEMENT' | 'ACCOMPLISHMENT' |
   'MENTORSHIP' | 'EVANGELISM' | 'RECRUITING' | 'COMMUNITY'
 export type Milestone = 0 | 1 | 2 | 3 | 4 | 5
 
 export type MilestoneMap = {
   'MOBILE': Milestone,
-  'WEB_CLIENT': Milestone,
+  'WEB': Milestone,
   'FOUNDATIONS': Milestone,
   'SERVERS': Milestone,
   'PROJECT_MANAGEMENT': Milestone,
@@ -18,46 +18,60 @@ export type MilestoneMap = {
   'INITIATIVE': Milestone,
   'CAREER_DEVELOPMENT': Milestone,
   'ORG_DESIGN': Milestone,
-  'WELLBEING': Milestone,
+  'PEOPLE_MANAGEMENT': Milestone,
   'ACCOMPLISHMENT': Milestone,
   'MENTORSHIP': Milestone,
   'EVANGELISM': Milestone,
   'RECRUITING': Milestone,
   'COMMUNITY': Milestone
 }
+
 export const milestones = [0, 1, 2, 3, 4, 5]
 
-export const milestoneToPoints = (milestone: Milestone): number => {
+export const categoryWeight = (category: string): number => {
+  switch (category) {
+    case 'A': return 4
+    case 'B': return 2
+    case 'C': return 2
+    case 'D': return 1
+    default: return 1
+  }
+}
+
+export const milestoneToPoints = (category: string, milestone: Milestone): number => {
   switch (milestone) {
     case 0: return 0
-    case 1: return 1
-    case 2: return 3
-    case 3: return 6
-    case 4: return 12
-    case 5: return 20
+    case 1: return 2 * categoryWeight(category)
+    case 2: return 4 * categoryWeight(category)
+    case 3: return 8 * categoryWeight(category)
+    case 4: return 16 * categoryWeight(category)
+    case 5: return 32 * categoryWeight(category)
     default: return 0
   }
 }
 
 export const pointsToLevels = {
   '0': '1.1',
-  '12': '1.2',
-  '24': '1.3',
-  '36': '2.1',
-  '48': '2.2',
-  '60': '2.3',
-  '72': '3.1',
-  '96': '3.2',
-  '120': '3.3',
-  '144': '4.1',
-  '192': '4.2',
-  '240': '4.3',
-  '288': '5.1',
-  '304': '5.2',
-  '320': '5.3',
+  '72': '1.2',
+  '144': '1.3',
+  '216': '2.1',
+  '288': '2.2',
+  '360': '2.3',
+  '432': '3.1',
+  '504': '3.2',
+  '576': '3.3',
+  '648': '4.1',
+  '720': '4.2',
+  '792': '4.3',
+  '864': '5.1',
+  '936': '5.2',
+  '1008': '5.3',
+  '1080': '6.1',
+  '1152': '6.2',
+  '1224': '6.3',
 }
 
-export const maxLevel = 320
+export const maxLevel = 1280
 
 export type Track = {
   displayName: string,
@@ -72,7 +86,7 @@ export type Track = {
 
 type Tracks = {|
   'MOBILE': Track,
-  'WEB_CLIENT': Track,
+  'WEB': Track,
   'FOUNDATIONS': Track,
   'SERVERS': Track,
   'PROJECT_MANAGEMENT': Track,
@@ -81,7 +95,7 @@ type Tracks = {|
   'INITIATIVE': Track,
   'CAREER_DEVELOPMENT': Track,
   'ORG_DESIGN': Track,
-  'WELLBEING': Track,
+  'PEOPLE_MANAGEMENT': Track,
   'ACCOMPLISHMENT': Track,
   'MENTORSHIP': Track,
   'EVANGELISM': Track,
@@ -157,7 +171,7 @@ export const tracks: Tracks = {
     }],
   },
 
-  "WEB_CLIENT": {
+  "WEB": {
     "displayName": "Web client",
     "category": "A",
     "description": "Develops expertise in web client technologies, such as HTML, CSS, and JavaScript",
@@ -760,8 +774,8 @@ export const tracks: Tracks = {
     }],
   },
 
-  "WELLBEING": {
-    "displayName": "Wellbeing",
+  "PEOPLE_MANAGEMENT": {
+    "displayName": "People Management",
     "category": "C",
     "description": "Supports the emotional well-being of group members in difficult times, and celebrates their successes",
     "milestones": [{
@@ -896,7 +910,7 @@ export const tracks: Tracks = {
 
   "MENTORSHIP": {
     "displayName": "Mentorship",
-    "category": "D",
+    "category": "C",
     "description": "Provides support to colleagues, spreads knowledge, and develops the team outside formal reporting structures",
     "milestones": [{
       "summary": "Informally mentors individuals in an ad-hoc way, supports new hires, and conveys institutional knowledge",
@@ -1176,7 +1190,7 @@ export const categoryPointsFromMilestoneMap = (milestoneMap: MilestoneMap) => {
     const milestone = milestoneMap[trackId]
     const categoryId = tracks[trackId].category
     let currentPoints = pointsByCategory.get(categoryId) || 0
-    pointsByCategory.set(categoryId, currentPoints + milestoneToPoints(milestone))
+    pointsByCategory.set(categoryId, currentPoints + milestoneToPoints(categoryId, milestone))
   })
   return Array.from(categoryIds.values()).map(categoryId => {
     const points = pointsByCategory.get(categoryId)
@@ -1185,22 +1199,24 @@ export const categoryPointsFromMilestoneMap = (milestoneMap: MilestoneMap) => {
 }
 
 export const totalPointsFromMilestoneMap = (milestoneMap: MilestoneMap): number =>
-  trackIds.map(trackId => milestoneToPoints(milestoneMap[trackId]))
+  trackIds.map(trackId => milestoneToPoints(tracks[trackId].category, milestoneMap[trackId]))
     .reduce((sum, addend) => (sum + addend), 0)
 
 export const categoryColorScale = d3.scaleOrdinal()
   .domain(categoryIds)
-  .range(['#00abc2', '#428af6', '#e1439f', '#e54552'])
+  .range(['#07689f', '#00e0ff', '#a2d5f2', '#a6fff2'])
 
 export const titles = [
-  {label: 'Engineer I', minPoints: 0, maxPoints: 35},
-  {label: 'Engineer II', minPoints: 36, maxPoints: 71},
-  {label: 'Senior Engineer', minPoints: 72, maxPoints: 143},
-  {label: 'Engineering Lead', minPoints: 144, maxPoints: 180},
-  {label: 'Staff Engineer', minPoints: 144, maxPoints: 180},
-  {label: 'Engineering Manager', minPoints: 181, maxPoints: 299},
-  {label: 'Principal Engineer', minPoints: 181, maxPoints: 299},
-  {label: 'Director of Engineering', minPoints: 300}
+  {label: 'Junior Software Engineer', minPoints: 0, maxPoints: 160},
+  {label: 'Software Engineer I', minPoints: 161, maxPoints: 320},
+  {label: 'Software Engineer II', minPoints: 321, maxPoints: 480},
+  {label: 'Senior Software Engineer', minPoints: 481, maxPoints: 640},
+  {label: 'Lead Software Engineer', minPoints: 641, maxPoints: 800},
+  {label: 'Staff Software Engineer', minPoints: 641, maxPoints: 800},
+  {label: 'Software Engineering Manager', minPoints: 801, maxPoints: 960},
+  {label: 'Principal Software Engineer', minPoints: 801, maxPoints: 960},
+  {label: 'Director of Software Engineering', minPoints: 961, maxPoints: 1120},
+  {label: 'VP of Software Engineering', minPoints: 1280}
 ]
 
 export const eligibleTitles = (milestoneMap: MilestoneMap): string[] => {
