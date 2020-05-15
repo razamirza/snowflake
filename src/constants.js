@@ -1208,15 +1208,23 @@ export const categoryColorScale = d3.scaleOrdinal()
 
 export const titles = [
   {label: 'Junior Software Engineer', minPoints: 0, maxPoints: 160},
-  {label: 'Software Engineer I', minPoints: 161, maxPoints: 320},
-  {label: 'Software Engineer II', minPoints: 321, maxPoints: 480},
+  {label: 'Junior QA', minPoints: 0, maxPoints: 160},
+  {label: 'Intermediate Software Engineer', minPoints: 161, maxPoints: 320},
+  {label: 'Intermediate QA', minPoints: 161, maxPoints: 320},
   {label: 'Senior Software Engineer', minPoints: 481, maxPoints: 640},
+  {label: 'Senior QA', minPoints: 481, maxPoints: 640},
   {label: 'Lead Software Engineer', minPoints: 641, maxPoints: 800},
+  {label: 'Lead QA', minPoints: 641, maxPoints: 800},
   {label: 'Staff Software Engineer', minPoints: 641, maxPoints: 800},
+  {label: 'Software Engineer in Test', minPoints: 641, maxPoints: 800},
+  {label: 'Snr Staff Software Engineer', minPoints: 801, maxPoints: 960},
   {label: 'Software Engineering Manager', minPoints: 801, maxPoints: 960},
+  {label: 'Software QA Manager', minPoints: 801, maxPoints: 960},
+  {label: 'Snr Software Engineer in Test', minPoints: 641, maxPoints: 800},
   {label: 'Principal Software Engineer', minPoints: 801, maxPoints: 960},
   {label: 'Director of Software Engineering', minPoints: 961, maxPoints: 1120},
-  {label: 'VP of Software Engineering', minPoints: 1280}
+  {label: 'VP of Software Engineering', minPoints: 1280},
+  {label: 'CTO', minPoints: 1280}
 ]
 
 export const eligibleTitles = (milestoneMap: MilestoneMap): string[] => {
